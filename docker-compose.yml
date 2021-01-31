@@ -1,0 +1,38 @@
+version: '3'
+services:
+  se-server-alice:
+    image: mmmaxwwwell/space-engineers-dedicated-docker-linux:wine6
+    container_name: space-engineers-dedicated-docker-linux_alice
+    restart: unless-stopped
+    volumes:
+    - ./appdata/space-engineers-alice/config/World:/appdata/space-engineers/World
+    - ./appdata/space-engineers-alice/config/Plugins:/appdata/space-engineers/Plugins
+    - ./appdata/space-engineers-alice/config/SpaceEngineers-Dedicated.cfg:/appdata/space-engineers/SpaceEngineersDedicated/SpaceEngineers-Dedicated.cfg
+    - ./appdata/space-engineers-alice/bins/SpaceEngineersDedicated:/appdata/space-engineers/SpaceEngineersDedicated
+    - ./appdata/space-engineers-alice/bins/steamcmd:/home/se/.steam
+    ports:
+    - "27016:27016/udp"
+    networks:
+    - internal
+  se-server-bob:
+    image: mmmaxwwwell/space-engineers-dedicated-docker-linux:wine6
+    container_name: space-engineers-dedicated-docker-linux_bob
+    restart: unless-stopped
+    volumes:
+    - ./appdata/space-engineers-bob/config/World:/appdata/space-engineers/World
+    - ./appdata/space-engineers-bob/config/Plugins:/appdata/space-engineers/Plugins
+    - ./appdata/space-engineers-bob/config/SpaceEngineers-Dedicated.cfg:/appdata/space-engineers/SpaceEngineersDedicated/SpaceEngineers-Dedicated.cfg
+    - ./appdata/space-engineers-bob/bins/SpaceEngineersDedicated:/appdata/space-engineers/SpaceEngineersDedicated
+    - ./appdata/space-engineers-bob/bins/steamcmd:/home/se/.steam
+    ports:
+    - "27017:27017/udp"
+    networks:
+    - internal
+  mq:
+    image: rabbitmq:alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    networks:
+    - internal
+networks:
+  internal:
